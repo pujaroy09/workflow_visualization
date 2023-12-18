@@ -1,5 +1,6 @@
 <script>
-import BpmnViewer from 'bpmn-js';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
+
 var rcsUrl = '../../public/rcs.bpmn';
 var bakeryUrl = '../../public/pizza-collaboration.bpmn';
 var carUrl = '';
@@ -12,18 +13,21 @@ export default {
       
 
 
-      var viewer = new BpmnViewer({
-        container: '#canvas'
+      var modeler = new BpmnModeler({
+        container: '#canvas',
+        keyboard: {
+          bindTo: window
+        }
       });
 
-
-      viewer.importXML(xmlData).then(function(result) {
+      console.log(modeler)
+      modeler.importXML(xmlData).then(function(result) {
 
         const { warnings } = result;
 
         console.log('success !', warnings);
 
-        viewer.get('canvas').zoom('fit-viewport');
+        modeler.get('canvas').zoom('fit-viewport');
       }).catch(function(err) {
 
         const { warnings, message } = err;
