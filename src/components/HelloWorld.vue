@@ -53,9 +53,22 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style>
 html, body, #canvas, #canvas > div {
       height: 100vh;
+      
+      
+    }
+
+    body {
+      padding: 20px;
+      background: rgb(243, 244, 246);
+    }
+    #canvas {
+      margin-top: 20px;
+      padding: 10px 40px;
+      box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+      background: #fff;
     }
 
     

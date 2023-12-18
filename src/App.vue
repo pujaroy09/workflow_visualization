@@ -53,11 +53,11 @@ export default {
             value="Submit"
           >
         </form>
-        <div v-if="formSubmitted">
-          <p>Workflow Type: {{ type }}</p>
+        <div v-if="formSubmitted" class="form-data">
+          <p>Workflow Type: <span class="inner-child">{{ type }}</span></p>
           <div v-if="type === 'rcs'">  
-          <p>Department: {{ selectedDepartment }}</p>
-          <p>Professor: {{ selectedProfessor }}</p>
+          <p>Department: <span>{{ selectedDepartment }}</span></p>
+          <p>Professor: <span>{{ selectedProfessor }}</span></p>
           </div>
           <hello-world :type="type"></hello-world>
         </div>
@@ -69,6 +69,17 @@ export default {
 </template>
 
 <style scoped>
+p {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+h2 {
+  text-align: center;
+    font-weight: bold;
+}
+.form-data {
+    padding: 0 40px;
+}
 form {
     padding: 10px;
     border: 2px solid black;
