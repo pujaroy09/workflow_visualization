@@ -1,52 +1,48 @@
 <script>
 import BpmnViewer from 'bpmn-js';
+var diagramUrl = '../../public/pizza-collaboration.bpmn';
 export default {
   methods: {
-    funcUpload(event) {
-      // var input = event.target;
-      // var text = "";
-      // var reader = new filereader();
-      // var onload = function(event) {
-      //     text = reader.result;
-      //     console.log(text);
+    showDiagram(xmlData) {
+      
 
-      // };
-
-      // reader.onload = onload;
-      // reader.readastext(input.files[0]);
-      var example = event.target.files[0]
-      console.log(event.target.files[0]);
 
       var viewer = new BpmnViewer({
-  container: '#canvas'
-});
+        container: '#canvas'
+      });
 
 
-viewer.importXML(example).then(function(result) {
+      viewer.importXML(xmlData).then(function(result) {
 
-  const { warnings } = result;
+        const { warnings } = result;
 
-  console.log('success !', warnings);
+        console.log('success !', warnings);
 
-  viewer.get('canvas').zoom('fit-viewport');
-}).catch(function(err) {
+        viewer.get('canvas').zoom('fit-viewport');
+      }).catch(function(err) {
 
-  const { warnings, message } = err;
+        const { warnings, message } = err;
 
-  console.log('something went wrong:', warnings, message);
-});
-    },
+        console.log('something went wrong:', warnings, message);
+      });
+    },  
+  },
+  mounted() {
+    $.get(diagramUrl, this.showDiagram, 'text');
   }
 };
 
 </script>
 
 <template>
-  <input type='file' @change='funcUpload'>
   <div id = "canvas">
   </div>
 </template>
 
 <style scoped>
+html, body, #canvas, #canvas > div {
+      height: 100vh;
+    }
 
+    
 </style>
