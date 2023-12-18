@@ -1,7 +1,12 @@
 <script>
 import BpmnViewer from 'bpmn-js';
-var diagramUrl = '../../public/pizza-collaboration.bpmn';
+var rcsUrl = '../../public/rcs.bpmn';
+var bakeryUrl = '../../public/pizza-collaboration.bpmn';
+var carUrl = '';
 export default {
+  props:{
+    type: String
+  },
   methods: {
     showDiagram(xmlData) {
       
@@ -28,7 +33,12 @@ export default {
     },  
   },
   mounted() {
-    $.get(diagramUrl, this.showDiagram, 'text');
+    if(this.type== 'rcs'){
+      $.get(rcsUrl, this.showDiagram, 'text');
+    } else if (this.type == 'bakery'){
+      $.get(bakeryUrl, this.showDiagram, 'text');
+    } else
+    $.get(carUrl, this.showDiagram, 'text');
   }
 };
 

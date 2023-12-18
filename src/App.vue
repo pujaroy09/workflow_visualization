@@ -5,7 +5,7 @@ export default {
   components: { HelloWorld },
   data() {
       return {
-        type: "0",
+        type: "rcs",
         formSubmitted: false,
         departments: ['Maths', 'Statistics', 'Computer Science'],
         professors: ['Professor 1', 'Professor 2', 'Professor 3'],
@@ -30,11 +30,11 @@ export default {
         <form @submit.prevent="submitForm" v-if="!formSubmitted">
           <h3>Information:</h3>
           <span>Workflow Type</span>
-          <input type="radio" v-model="type" value="0">RCS
-          <input type="radio" v-model="type" value="1">Bakery
-          <input type="radio" v-model="type" value="2">Car Assemble
+          <input type="radio" v-model="type" value="rcs">RCS
+          <input type="radio" v-model="type" value="bakery">Bakery
+          <input type="radio" v-model="type" value="car assemble">Car Assemble
           <br>
-          <div v-if="type === '0'">
+          <div v-if="type === 'rcs'">
             <span>Choose Department</span>
             <select name="" id="" v-model="selectedDepartment">
               <option value="" disabled>Select a car</option>
@@ -55,9 +55,11 @@ export default {
         </form>
         <div v-if="formSubmitted">
           <p>Workflow Type: {{ type }}</p>
+          <div v-if="type === 'rcs'">  
           <p>Department: {{ selectedDepartment }}</p>
           <p>Professor: {{ selectedProfessor }}</p>
-          <hello-world></hello-world>
+          </div>
+          <hello-world :type="type"></hello-world>
         </div>
       </div>
       
