@@ -11,12 +11,32 @@ export default {
         professors: ['Professor 1', 'Professor 2', 'Professor 3'],
         selectedDepartment: "Maths",
         selectedProfessor: "Professor 1",
+
+        // New data property for user name
+        userName: "Guest User",
+        editedUserName: "", // to hold the edited name temporarily
       };
     },
-    methods: {
-      submitForm: function () {
-        this.formSubmitted = true
-      }
+
+    created() {
+    // Check if the user name is stored in local storage
+      this.userName = "Guest User";
+      
+    },
+
+      methods: {
+        submitForm: function () {
+          this.formSubmitted = true
+        },
+    
+      saveUserName: function () {
+        if (this.editedUserName.trim() === "") {
+          this.nameRequiredError = true; // Show the error
+        } else {
+          this.userName = this.editedUserName;
+          this.editedUserName = ""; // Clear the temporary name
+        }
+      },
     },
 }
 
@@ -26,7 +46,16 @@ export default {
   <header>
     <div class="wrapper">
       <div>
-        <h2>Workflow Visualization</h2>
+        
+        <h1>Workflow Visualization</h1>
+        <div class="user_name">
+          <h2>Hello <span>{{ userName }}</span></h2>
+          
+          <!-- Input to edit the user name -->
+          <input v-model="editedUserName" id='change_user' placeholder="Enter your name">
+          <button @click="saveUserName" id="change_user_button">Change Name</button>
+
+        </div>
         <form @submit.prevent="submitForm" v-if="!formSubmitted">
           <h3>Information:</h3>
           <span>Workflow Type</span>
@@ -47,7 +76,7 @@ export default {
             </select><br>
           </div>
           
-          <input 
+          <input onclick="$('#change_user').hide(), $('#change_user_button').hide()"
             class="submit" 
             type="submit" 
             value="Submit"
@@ -67,44 +96,3 @@ export default {
   </header>
 
 </template>
-
-<style scoped>
-p {
-  font-weight: bold;
-  text-transform: capitalize;
-}
-h2 {
-  text-align: center;
-    font-weight: bold;
-}
-.form-data {
-    padding: 0 40px;
-}
-form {
-    padding: 10px;
-    border: 2px solid black;
-    border-radius: 5px;
-  }
-
-  input {
-    padding: 4px 8px;
-    margin: 4px;
-  }
-
-  span {
-    font-size: 18px;
-    margin: 4px;
-    font-weight: 500;
-  }
-
-  .submit {
-    font-size: 15px;
-    color: #fff;
-    background: #222;
-    padding: 6px 12px;
-    border: none;
-    margin-top: 8px;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-</style>
