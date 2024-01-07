@@ -56,7 +56,7 @@ html, body, #canvas, #canvas > div {
     }
 
     body {
-      padding: 20px;
+      padding: 0px;
       background: rgb(243, 244, 246);
     }
     #canvas {
