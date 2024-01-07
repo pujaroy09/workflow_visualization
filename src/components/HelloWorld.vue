@@ -10,17 +10,12 @@ export default {
   },
   methods: {
     showDiagram(xmlData) {
-      
-
-
       var modeler = new BpmnModeler({
         container: '#canvas',
         keyboard: {
           bindTo: window
         }
       });
-
-      console.log(modeler)
       modeler.importXML(xmlData).then(function(result) {
 
         const { warnings } = result;
