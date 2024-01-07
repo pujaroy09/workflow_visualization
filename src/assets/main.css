@@ -1,4 +1,6 @@
 @import './base.css';
+@import './diff.css';
+@import './app.css';
 @import 'bpmn-js/dist/assets/diagram-js.css';
 @import 'bpmn-js/dist/assets/bpmn-js.css';
 

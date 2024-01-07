@@ -86,15 +86,15 @@ export default {
             @click="compare"
         >   
 
-        <div v-if="formSubmitted" class="form-data">
-          <compare-daigram :type="type"></compare-daigram>
-        </div>
         <!-- <router-link to="/home">Home</router-link> -->
       </div>
       
     </div>
+    <div v-if="formSubmitted" class="form-data">
+          <compare-daigram :type="type1"></compare-daigram>
+    </div>
   </header>
-<router-view></router-view>
+  <router-link to="/home">Home</router-link>
 </template>
 
 <style scoped>
@@ -108,6 +108,7 @@ h2 {
 }
 .form-data {
     padding: 0 40px;
+    height: 100%;
 }
 form {
     padding: 10px;
@@ -149,5 +150,8 @@ form {
     align-items: center;
     justify-content: center;
     flex-flow: column;
+  }
+  header {
+    height: 100vh;
   }
 </style>

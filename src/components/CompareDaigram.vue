@@ -26,28 +26,27 @@
 </template>
 
 <script>
-import "../assets/diff.css";
-import "../assets/app.css";
 import $ from "jquery";
 
 import { forEach, isObject, every, filter } from "min-dash";
 
 import BpmnViewer from "bpmn-js";
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+//import BpmnViewer from "bpmn-js/lib/NavigatedViewer";
 
 import { diff } from "bpmn-js-differ";
 
 export default {
 data() {
   return {
-    viewers: this.createViewers("left", "right")
+    viewers: []
   }
   
 },
 
 methods: {
   createViewer(side) {
-    return new BpmnModeler({
+    return new BpmnViewer({
       container: "#canvas-" + side,
       height: "100%",
       width: "100%",
@@ -100,7 +99,7 @@ methods: {
   },
 
   allDiagramsLoaded() {
-    return every(viewers, isLoaded);
+    return every(viewers, this.isLoaded);
   },
 
   setLoading(viewer, loading) {
@@ -123,12 +122,12 @@ methods: {
     });
   },
   diagramLoading(side, viewer) {
-    setLoading(viewer, true);
+    this.setLoading(viewer, true);
 
-    var loaded = filter(viewers, isLoaded);
+    var loaded = filter(this.viewers, this.isLoaded);
 
     // clear diffs on loaded
-    forEach(loaded, clearDiffs);
+    forEach(loaded, this.clearDiffs);
   },
 
   diagramLoaded(err, side, viewer) {
@@ -136,14 +135,14 @@ methods: {
       console.error("load error", err);
     }
 
-    setLoading(viewer, err || false);
+    this.setLoading(viewer, err || false);
 
-    if (allDiagramsLoaded()) {
+    if (this.allDiagramsLoaded()) {
       // sync viewboxes
-      var other = getViewer(side === "left" ? "right" : "left");
+      var other = this.getViewer(side === "left" ? "right" : "left");
       viewer.get("canvas").viewbox(other.get("canvas").viewbox());
 
-      showDiff(getViewer("left"), getViewer("right"));
+      this.showDiff(this.getViewer("left"), this.getViewer("right"));
     }
   },
 
@@ -151,10 +150,10 @@ methods: {
   // make sure you run the application via web-server (ie. connect (node) or asdf (ruby))
 
   loadDiagram(side, diagram) {
-    console.log('32')
     var viewer = this.getViewer(side);
-
+    console.log(side, diagram.url)
     function done(err) {
+      console.log('---------->', err, side, viewer)
       this.diagramLoaded(err, side, viewer);
     }
 
@@ -165,31 +164,37 @@ methods: {
     }
 
     $.get(diagram.url, function (xml) {
-      viewer.importXML(xml, done);
+      
+      viewer.importXML(xml).then(function(result) {
+        done(result);
+      }).catch(function(err) {
+      });
+
+      
     });
   },
 
   showDiff(viewerOld, viewerNew) {
     var result = diff(viewerOld.getDefinitions(), viewerNew.getDefinitions());
 
-    forEach(viewers, clearDiffs);
+    forEach(viewers, this.clearDiffs);
 
     $.each(result._removed, function (i, obj) {
-      highlight(viewerOld, i, "diff-removed");
-      addMarker(viewerOld, i, "marker-removed", "&minus;");
+      this.highlight(viewerOld, i, "diff-removed");
+      this.addMarker(viewerOld, i, "marker-removed", "&minus;");
     });
 
     $.each(result._added, function (i, obj) {
-      highlight(viewerNew, i, "diff-added");
-      addMarker(viewerNew, i, "marker-added", "&#43;");
+      this.highlight(viewerNew, i, "diff-added");
+      this.addMarker(viewerNew, i, "marker-added", "&#43;");
     });
 
     $.each(result._layoutChanged, function (i, obj) {
-      highlight(viewerOld, i, "diff-layout-changed");
-      addMarker(viewerOld, i, "marker-layout-changed", "&#8680;");
+      this.highlight(viewerOld, i, "diff-layout-changed");
+      this.addMarker(viewerOld, i, "marker-layout-changed", "&#8680;");
 
-      highlight(viewerNew, i, "diff-layout-changed");
-      addMarker(viewerNew, i, "marker-layout-changed", "&#8680;");
+      this.highlight(viewerNew, i, "diff-layout-changed");
+      this.addMarker(viewerNew, i, "marker-layout-changed", "&#8680;");
     });
 
     function prettyPrint(obj) {
@@ -197,11 +202,11 @@ methods: {
     }
 
     $.each(result._changed, function (i, obj) {
-      highlight(viewerOld, i, "diff-changed");
-      addMarker(viewerOld, i, "marker-changed", "&#9998;");
+      this.highlight(viewerOld, i, "diff-changed");
+      this.addMarker(viewerOld, i, "marker-changed", "&#9998;");
 
-      highlight(viewerNew, i, "diff-changed");
-      addMarker(viewerNew, i, "marker-changed", "&#9998;");
+      this.highlight(viewerNew, i, "diff-changed");
+      this.addMarker(viewerNew, i, "marker-changed", "&#9998;");
 
       var details = "<table><tr><th>Attribute</th><th>old</th><th>new</th></tr>";
       $.each(obj.attrs, function (attr, changes) {
@@ -280,7 +285,7 @@ methods: {
 
 
   openDiagram(xml, side) {
-    loadDiagram(side, { xml: xml });
+    this.loadDiagram(side, { xml: xml });
   },
 
   openFile(file, target, done) {
@@ -384,22 +389,22 @@ methods: {
       row.hover(
         function () {
           if (changed === "removed") {
-            highlight(viewerOld, id, HIGHLIGHT_CLS);
+            this.highlight(viewerOld, id, HIGHLIGHT_CLS);
           } else if (changed === "added") {
-            highlight(viewerNew, id, HIGHLIGHT_CLS);
+            this.highlight(viewerNew, id, HIGHLIGHT_CLS);
           } else {
-            highlight(viewerOld, id, HIGHLIGHT_CLS);
-            highlight(viewerNew, id, HIGHLIGHT_CLS);
+            this.highlight(viewerOld, id, HIGHLIGHT_CLS);
+            this.highlight(viewerNew, id, HIGHLIGHT_CLS);
           }
         },
         function () {
           if (changed === "removed") {
-            unhighlight(viewerOld, id, HIGHLIGHT_CLS);
+            this.unhighlight(viewerOld, id, HIGHLIGHT_CLS);
           } else if (changed === "added") {
-            unhighlight(viewerNew, id, HIGHLIGHT_CLS);
+            this.unhighlight(viewerNew, id, HIGHLIGHT_CLS);
           } else {
-            unhighlight(viewerOld, id, HIGHLIGHT_CLS);
-            unhighlight(viewerNew, id, HIGHLIGHT_CLS);
+            this.unhighlight(viewerOld, id, HIGHLIGHT_CLS);
+            this.unhighlight(viewerNew, id, HIGHLIGHT_CLS);
           }
         }
       );
@@ -436,13 +441,17 @@ methods: {
   }
 },
 mounted() {
-  this.loadDiagram("left", { url: "public/pizza-collaboration.bpmn" });
-  this.loadDiagram("right", { url: "/public/rcs.bpmn" });
+  // setTimeout(()=> {
+  //   this.viewers = this.createViewers("left", "right");
+  // }, 1000);
+  this.viewers = this.createViewers("left", "right");
+  this.loadDiagram("left", { url: "../../public/new.bpmn" });
+  this.loadDiagram("right", { url: "../../public/old.bpmn" });
 
   $(".drop-zone").each(function () {
     var node = this,
       element = $(node);
-
+      console.log('==================>', node, element)
     element.append('<div class="drop-marker" />');
 
     function removeMarker() {
@@ -454,7 +463,7 @@ mounted() {
       e.preventDefault();
 
       var files = e.dataTransfer.files;
-      openFile(files[0], element.attr("target"), openDiagram);
+      this.openFile(files[0], element.attr("target"), this.openDiagram);
 
       removeMarker();
     }
@@ -480,7 +489,7 @@ mounted() {
     node.addEventListener("drop", handleFileSelect, false);
   });
   $(".file").on("change", function (e) {
-    openFile(e.target.files[0], $(this).attr("target"), openDiagram);
+    this.openFile(e.target.files[0], $(this).attr("target"), this.openDiagram);
   });
 
   $("#changes-overview .show-hide-toggle").click(function () {

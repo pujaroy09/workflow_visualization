@@ -10,6 +10,7 @@ export default {
   },
   methods: {
     showDiagram(xmlData) {
+      console.log(xmlData);
       var modeler = new BpmnModeler({
         container: '#canvas',
         keyboard: {
