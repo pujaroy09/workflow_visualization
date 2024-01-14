@@ -40,17 +40,15 @@ export default {
             <span>Workflow Type</span>
             <input type="radio" v-model="type1" value="rcs">RCS
             <input type="radio" v-model="type1" value="bakery">Bakery
-            <input type="radio" v-model="type1" value="car assemble">Car Assemble
+           
             <br>
             <div v-if="type1 === 'rcs'">
                 <span>Choose Department</span>
                 <select name="" id="" v-model="selectedDepartment1">
-                <option value="" disabled>Select a car</option>
                 <option v-for="department in departments1" :key="department">{{ department }}</option>
                 </select><br>
                 <span>Select Professor</span>
                 <select name="" id="" v-model="selectedProfessor1">
-                <option value="" disabled>Select a car</option>
                 <option v-for="professor in professors1" :key="professor">{{ professor }}</option>
                 </select><br>
             </div>
@@ -61,17 +59,15 @@ export default {
             <span>Workflow Type</span>
             <input type="radio" v-model="type2" value="rcs">RCS
             <input type="radio" v-model="type2" value="bakery">Bakery
-            <input type="radio" v-model="type2" value="car assemble">Car Assemble
+          
             <br>
             <div v-if="type2 === 'rcs'">
                 <span>Choose Department</span>
                 <select name="" id="" v-model="selectedDepartment2">
-                <option value="" disabled>Select a car</option>
                 <option v-for="department in departments2" :key="department">{{ department }}</option>
                 </select><br>
                 <span>Select Professor</span>
                 <select name="" id="" v-model="selectedProfessor2">
-                <option value="" disabled>Select a car</option>
                 <option v-for="professor in professors2" :key="professor">{{ professor }}</option>
                 </select><br>
             </div>

@@ -7,9 +7,9 @@ export default {
       return {
         type: "rcs",
         formSubmitted: false,
-        departments: ['Maths', 'Statistics', 'Computer Science'],
+        departments: ['Mathematics', 'Statistics', 'Computer Science'],
         professors: ['Professor 1', 'Professor 2', 'Professor 3'],
-        selectedDepartment: "Maths",
+        selectedDepartment: "Mathematics",
         selectedProfessor: "Professor 1",
       };
     },
@@ -32,17 +32,14 @@ export default {
           <span>Workflow Type</span>
           <input type="radio" v-model="type" value="rcs">RCS
           <input type="radio" v-model="type" value="bakery">Bakery
-          <input type="radio" v-model="type" value="car assemble">Car Assemble
           <br>
           <div v-if="type === 'rcs'">
             <span>Choose Department</span>
             <select name="" id="" v-model="selectedDepartment">
-              <option value="" disabled>Select a car</option>
               <option v-for="department in departments" :key="department">{{ department }}</option>
             </select><br>
             <span>Select Professor</span>
             <select name="" id="" v-model="selectedProfessor">
-              <option value="" disabled>Select a car</option>
               <option v-for="professor in professors" :key="professor">{{ professor }}</option>
             </select><br>
           </div>

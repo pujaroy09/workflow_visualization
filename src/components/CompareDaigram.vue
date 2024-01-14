@@ -1,19 +1,19 @@
 <template>
   <div class="content">
       <div class="di-container left drop-zone" target="left">
-        <div class="io-control di-header">
+        <!-- <div class="io-control di-header">
           <h2>version A</h2>
           <input class="file" type="file" target="left" />
-        </div>
+        </div> -->
 
         <div class="canvas" id="canvas-left"></div>
       </div>
 
       <div class="di-container right drop-zone" target="right">
-        <div class="io-control di-header">
+        <!-- <div class="io-control di-header">
           <h2>version B</h2>
           <input class="file" type="file" target="right" />
-        </div>
+        </div> -->
 
         <div class="canvas" id="canvas-right"></div>
       </div>
@@ -442,8 +442,8 @@ methods: {
 },
 mounted() {
   this.viewers = this.createViewers("left", "right");
-  this.loadDiagram("left", { url: "../../public/new.bpmn" });
-  this.loadDiagram("right", { url: "../../public/old.bpmn" });
+  this.loadDiagram("left", { url: "../../public/rcs_stat.bpmn" });
+  this.loadDiagram("right", { url: "../../public/rcs.bpmn" });
 
   $(".drop-zone").each(function () {
     var node = this,
