@@ -26,14 +26,10 @@
 </template>
 
 <script>
+
 import $ from "jquery";
-
 import { forEach, isObject, every, filter } from "min-dash";
-
-import BpmnViewer from "bpmn-js";
-import BpmnModeler from 'bpmn-js/lib/Modeler';
-//import BpmnViewer from "bpmn-js/lib/NavigatedViewer";
-
+import BpmnViewer from "bpmn-js/lib/NavigatedViewer";
 import { diff } from "bpmn-js-differ";
 
 export default {
