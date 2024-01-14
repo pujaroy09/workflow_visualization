@@ -99,7 +99,7 @@ methods: {
   },
 
   allDiagramsLoaded() {
-    return every(viewers, this.isLoaded);
+    return every(this.viewers, this.isLoaded);
   },
 
   setLoading(viewer, loading) {
@@ -131,17 +131,17 @@ methods: {
   },
 
   diagramLoaded(err, side, viewer) {
-    if (err) {
+    if (err.error) {
       console.error("load error", err);
     }
 
-    this.setLoading(viewer, err || false);
-
+    this.setLoading(viewer, err.error || false);
+    
     if (this.allDiagramsLoaded()) {
       // sync viewboxes
       var other = this.getViewer(side === "left" ? "right" : "left");
       viewer.get("canvas").viewbox(other.get("canvas").viewbox());
-
+      console.log('---------------->>>>>>>');
       this.showDiff(this.getViewer("left"), this.getViewer("right"));
     }
   },
@@ -151,8 +151,8 @@ methods: {
 
   loadDiagram(side, diagram) {
     var viewer = this.getViewer(side);
-    console.log(side, diagram.url)
-    function done(err) {
+    
+    const done = (err)=> {
       console.log('---------->', err, side, viewer)
       this.diagramLoaded(err, side, viewer);
     }
@@ -176,20 +176,20 @@ methods: {
 
   showDiff(viewerOld, viewerNew) {
     var result = diff(viewerOld.getDefinitions(), viewerNew.getDefinitions());
+    console.log('---------------->>>>>>>');
+    forEach(this.viewers, this.clearDiffs);
 
-    forEach(viewers, this.clearDiffs);
-
-    $.each(result._removed, function (i, obj) {
+    $.each(result._removed, (i, obj) => {
       this.highlight(viewerOld, i, "diff-removed");
       this.addMarker(viewerOld, i, "marker-removed", "&minus;");
     });
 
-    $.each(result._added, function (i, obj) {
+    $.each(result._added, (i, obj) => {
       this.highlight(viewerNew, i, "diff-added");
       this.addMarker(viewerNew, i, "marker-added", "&#43;");
     });
 
-    $.each(result._layoutChanged, function (i, obj) {
+    $.each(result._layoutChanged, (i, obj) => {
       this.highlight(viewerOld, i, "diff-layout-changed");
       this.addMarker(viewerOld, i, "marker-layout-changed", "&#8680;");
 
@@ -201,7 +201,7 @@ methods: {
       return JSON.stringify(obj, null, "  ").replace(/"/g, "&quot;");
     }
 
-    $.each(result._changed, function (i, obj) {
+    $.each(result._changed, (i, obj) => {
       this.highlight(viewerOld, i, "diff-changed");
       this.addMarker(viewerOld, i, "marker-changed", "&#9998;");
 
@@ -279,7 +279,7 @@ methods: {
     });
 
     // create Table Overview of Changes
-    showChangesOverview(result, viewerOld, viewerNew);
+    this.showChangesOverview(result, viewerOld, viewerNew);
   },
 
 
@@ -380,14 +380,14 @@ methods: {
 
     var HIGHLIGHT_CLS = "highlight";
 
-    $("#changes-overview tr.entry").each(function () {
+    $("#changes-overview tr.entry").each(() => {
       var row = $(this);
 
       var id = row.data("element");
       var changed = row.data("changed");
 
       row.hover(
-        function () {
+        () => {
           if (changed === "removed") {
             this.highlight(viewerOld, id, HIGHLIGHT_CLS);
           } else if (changed === "added") {
@@ -397,7 +397,7 @@ methods: {
             this.highlight(viewerNew, id, HIGHLIGHT_CLS);
           }
         },
-        function () {
+        () => {
           if (changed === "removed") {
             this.unhighlight(viewerOld, id, HIGHLIGHT_CLS);
           } else if (changed === "added") {
@@ -441,9 +441,6 @@ methods: {
   }
 },
 mounted() {
-  // setTimeout(()=> {
-  //   this.viewers = this.createViewers("left", "right");
-  // }, 1000);
   this.viewers = this.createViewers("left", "right");
   this.loadDiagram("left", { url: "../../public/new.bpmn" });
   this.loadDiagram("right", { url: "../../public/old.bpmn" });
@@ -488,11 +485,11 @@ mounted() {
 
     node.addEventListener("drop", handleFileSelect, false);
   });
-  $(".file").on("change", function (e) {
+  $(".file").on("change", (e) => {
     this.openFile(e.target.files[0], $(this).attr("target"), this.openDiagram);
   });
 
-  $("#changes-overview .show-hide-toggle").click(function () {
+  $("#changes-overview .show-hide-toggle").click(() => {
     $("#changes-overview").toggleClass("collapsed");
   });
   $("body").removeClass("preload");
