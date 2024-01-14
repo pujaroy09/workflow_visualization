@@ -104,7 +104,7 @@ h2 {
 }
 .form-data {
     padding: 0 40px;
-    height: 100%;
+    height: 90vh;
 }
 form {
     padding: 10px;
