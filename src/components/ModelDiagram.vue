@@ -1,16 +1,13 @@
 <script>
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
-var rcsUrl = '../../public/rcs.bpmn';
-var bakeryUrl = '../../public/pizza-collaboration.bpmn';
-var carUrl = '';
 export default {
   props:{
-    type: String
+    type: String,
+    department: String
   },
   methods: {
     showDiagram(xmlData) {
-      console.log(xmlData);
       var modeler = new BpmnModeler({
         container: '#canvas',
         keyboard: {
@@ -33,12 +30,7 @@ export default {
     },  
   },
   mounted() {
-    if(this.type== 'rcs'){
-      $.get(rcsUrl, this.showDiagram, 'text');
-    } else if (this.type == 'bakery'){
-      $.get(bakeryUrl, this.showDiagram, 'text');
-    } else
-    $.get(carUrl, this.showDiagram, 'text');
+    $.get(`../../public/${this.type}-${this.department}.bpmn`, this.showDiagram, 'text');
   }
 };
 

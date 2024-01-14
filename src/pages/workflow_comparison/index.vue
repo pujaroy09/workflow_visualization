@@ -6,22 +6,41 @@ export default {
   data() {
       return {
         type1: "rcs",
-        departments1: ['Mathematics', 'Statistics', 'Computer Science'],
-        professors1: ['Professor 1', 'Professor 2', 'Professor 3'],
-        selectedDepartment1: "Mathematics",
-        selectedProfessor1: "Professor 1",
+        rcsDepartments1: ['Mathematics', 'Statistics', 'Computer Science'],
+        selectedRcsDepartment1: "",
+        bakeryDepartments1: ['Pizza', 'Cake', 'Coffee'],
+        selectedBakeryDepartment1: "",
         type2: "rcs",
-        departments2: ['Mathematics', 'Statistics', 'Computer Science'],
-        professors2: ['Professor 1', 'Professor 2', 'Professor 3'],
-        selectedDepartment2: "Mathematics",
-        selectedProfessor2: "Professor 1",
-        formSubmitted: false
+        rcsDepartments2: ['Mathematics', 'Statistics', 'Computer Science'],
+        selectedRcsDepartment2: "",
+        bakeryDepartments2: ['Pizza', 'Cake', 'Coffee'],
+        selectedBakeryDepartment2: "",
+        formSubmitted: false,
+        selectedDept1: "",
+        selectedDept2: "",
+        leftBpmn: '',
+        rightBpmn: '',
       };
     },
     methods: {
       compare: function () {
+        this.selectedDept1 = this.selectedBakeryDepartment1 || this.selectedRcsDepartment1;
+        this.selectedDept2 = this.selectedBakeryDepartment2 || this.selectedRcsDepartment2;
+        console.log(this.selectedDept1, this.selectedDept2, this.type1, this.type2)
+        this.leftBpmn = `../../public/${this.type1}-${this.selectedDept1}.bpmn`;
+        this.rightBpmn = `../../public/${this.type2}-${this.selectedDept2}.bpmn`;
+        console.log(this.leftBpmn, this.rightBpmn);
         this.formSubmitted = true
+        
       },
+      onChange1(type) {
+        this.selectedBakeryDepartment1 = '';
+        this.selectedRcsDepartment1 = '';
+      },
+      onChange2(type) {
+        this.selectedBakeryDepartment2 = '';
+        this.selectedRcsDepartment2 = '';
+      }
     },
 }
 
@@ -38,18 +57,22 @@ export default {
             <form>
             <h3>Information:</h3>
             <span>Workflow Type</span>
-            <input type="radio" v-model="type1" value="rcs">RCS
-            <input type="radio" v-model="type1" value="bakery">Bakery
+            <input type="radio" v-model="type1" @change="onChange1(type1)" value="rcs">RCS
+            <input type="radio" v-model="type1" @change="onChange1(type1)" value="bakery">Bakery
            
             <br>
             <div v-if="type1 === 'rcs'">
-                <span>Choose Department</span>
-                <select name="" id="" v-model="selectedDepartment1">
-                <option v-for="department in departments1" :key="department">{{ department }}</option>
+                <span>Department</span>
+                <select name="" id="" v-model="selectedRcsDepartment1">
+                  <option value="" disabled>Select a department</option>
+                <option v-for="department in rcsDepartments1" :key="department">{{ department }}</option>
                 </select><br>
-                <span>Select Professor</span>
-                <select name="" id="" v-model="selectedProfessor1">
-                <option v-for="professor in professors1" :key="professor">{{ professor }}</option>
+            </div>
+            <div v-if="type1 === 'bakery'">
+                <span>Menu</span>
+                <select name="" id="" v-model="selectedBakeryDepartment1">
+                <option value="" disabled>Select a department</option>
+                <option v-for="department in bakeryDepartments1" :key="department">{{ department }}</option>
                 </select><br>
             </div>
             </form>
@@ -57,18 +80,22 @@ export default {
             <form>
             <h3>Information:</h3>
             <span>Workflow Type</span>
-            <input type="radio" v-model="type2" value="rcs">RCS
-            <input type="radio" v-model="type2" value="bakery">Bakery
+            <input type="radio" @change="onChange2(type2)" v-model="type2" value="rcs">RCS
+            <input type="radio" @change="onChange2(type2)" v-model="type2" value="bakery">Bakery
           
             <br>
             <div v-if="type2 === 'rcs'">
-                <span>Choose Department</span>
-                <select name="" id="" v-model="selectedDepartment2">
-                <option v-for="department in departments2" :key="department">{{ department }}</option>
+                <span>Department</span>
+                <select name="" id="" v-model="selectedRcsDepartment2">
+                <option value="" disabled>Select a department</option>
+                <option v-for="department in rcsDepartments2" :key="department">{{ department }}</option>
                 </select><br>
-                <span>Select Professor</span>
-                <select name="" id="" v-model="selectedProfessor2">
-                <option v-for="professor in professors2" :key="professor">{{ professor }}</option>
+            </div>
+            <div v-if="type2 === 'bakery'">
+                <span>Menu</span>
+                <select name="" id="" v-model="selectedBakeryDepartment2">
+                <option value="" disabled>Select a department</option>
+                <option v-for="department in bakeryDepartments2" :key="department">{{ department }}</option>
                 </select><br>
             </div>
             </form>
@@ -87,7 +114,7 @@ export default {
       
     </div>
     <div v-if="formSubmitted" class="form-data">
-          <compare-daigram :type="type1"></compare-daigram>
+          <compare-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></compare-daigram>
     </div>
   </header>
   <router-link to="/home">Home</router-link>
@@ -111,7 +138,15 @@ form {
     border: 2px solid black;
     border-radius: 5px;
     width: 40%;
+    min-height: 200px;
+    min-width: 270px;
+    max-width: 270px;
   }
+  form div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
   input {
     padding: 4px 8px;
@@ -140,6 +175,7 @@ form {
     align-items: center;
     justify-content: space-evenly;
     padding: 10px 0;
+    width: 30%;
   }
   .parent-container {
     display: flex;

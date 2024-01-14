@@ -7,16 +7,22 @@ export default {
       return {
         type: "rcs",
         formSubmitted: false,
-        departments: ['Mathematics', 'Statistics', 'Computer Science'],
+        rcsDepartments: ['Mathematics', 'Statistics', 'Computer Science'],
+        bakeryDepartments: ['Pizza', 'Cake', 'Coffee'],
         professors: ['Professor 1', 'Professor 2', 'Professor 3'],
-        selectedDepartment: "Mathematics",
-        selectedProfessor: "Professor 1",
+        selectedRcsDepartment: "",
+        selectedBakeryDepartment: "",
+        selectedProfessor: "",
       };
     },
     methods: {
       submitForm: function () {
         this.formSubmitted = true
-      }
+      },
+      onChange() {
+        this.selectedBakeryDepartment = '';
+        this.selectedRcsDepartment = '';
+      },
     },
 }
 
@@ -30,17 +36,26 @@ export default {
         <form @submit.prevent="submitForm" v-if="!formSubmitted">
           <h3>Information:</h3>
           <span>Workflow Type</span>
-          <input type="radio" v-model="type" value="rcs">RCS
-          <input type="radio" v-model="type" value="bakery">Bakery
+          <input type="radio" @change="onChange()" v-model="type" value="rcs">RCS
+          <input type="radio" @change="onChange()" v-model="type" value="bakery">Bakery
           <br>
           <div v-if="type === 'rcs'">
-            <span>Choose Department</span>
-            <select name="" id="" v-model="selectedDepartment">
-              <option v-for="department in departments" :key="department">{{ department }}</option>
+            <span>Department</span>
+            <select name="" id="" v-model="selectedRcsDepartment">
+              <option value="" disabled>Select a department</option>
+              <option v-for="department in rcsDepartments" :key="department">{{ department }}</option>
             </select><br>
             <span>Select Professor</span>
             <select name="" id="" v-model="selectedProfessor">
+              <option value="" disabled>Select a professor</option>
               <option v-for="professor in professors" :key="professor">{{ professor }}</option>
+            </select><br>
+          </div>
+          <div v-if="type === 'bakery'">
+            <span>Menu</span>
+            <select name="" id="" v-model="selectedBakeryDepartment">
+              <option value="" disabled>Select a menu</option>
+              <option v-for="department in bakeryDepartments" :key="department">{{ department }}</option>
             </select><br>
           </div>
           
@@ -53,10 +68,13 @@ export default {
         <div v-if="formSubmitted" class="form-data">
           <p>Workflow Type: <span class="inner-child">{{ type }}</span></p>
           <div v-if="type === 'rcs'">  
-          <p>Department: <span>{{ selectedDepartment }}</span></p>
-          <p>Professor: <span>{{ selectedProfessor }}</span></p>
+            <p>Department: <span>{{ selectedRcsDepartment }}</span></p>
+            <p>Professor: <span>{{ selectedProfessor }}</span></p>
           </div>
-          <model-diagram :type="type"></model-diagram>
+          <div v-if="type === 'bakery'">  
+            <p>Menu: <span>{{ selectedBakeryDepartment }}</span></p>
+          </div>
+          <model-diagram :type="type" :department="selectedBakeryDepartment || selectedRcsDepartment"></model-diagram>
         </div>
         <router-link to="/home">Home</router-link>
       </div>
@@ -82,6 +100,7 @@ form {
     padding: 10px;
     border: 2px solid black;
     border-radius: 5px;
+    text-align: center;
   }
 
   input {

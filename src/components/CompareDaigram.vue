@@ -39,6 +39,10 @@ data() {
   }
   
 },
+props: {
+    leftBPMNUrl: String,
+    rightBPMNUrl: String
+},
 
 methods: {
   createViewer(side) {
@@ -137,7 +141,6 @@ methods: {
       // sync viewboxes
       var other = this.getViewer(side === "left" ? "right" : "left");
       viewer.get("canvas").viewbox(other.get("canvas").viewbox());
-      console.log('---------------->>>>>>>');
       this.showDiff(this.getViewer("left"), this.getViewer("right"));
     }
   },
@@ -438,8 +441,8 @@ methods: {
 },
 mounted() {
   this.viewers = this.createViewers("left", "right");
-  this.loadDiagram("left", { url: "../../public/rcs_stat.bpmn" });
-  this.loadDiagram("right", { url: "../../public/rcs.bpmn" });
+  this.loadDiagram("left", { url: this.leftBPMNUrl });
+  this.loadDiagram("right", { url: this.rightBPMNUrl });
 
   $(".drop-zone").each(function () {
     var node = this,

@@ -22,7 +22,7 @@
 .homepage-wrapper {
     background-image:  linear-gradient(45deg, 
               rgba(161, 71, 70, 0.75), 
-              rgba(1, 8, 15, 0.75)), url("../../assets/home_cover.png");
+              rgba(1, 8, 15, 0.75)), url("../../assets/home_cover.jpg");
     background-size: cover;
     height: 100vh;
     display: flex;
@@ -54,10 +54,8 @@
   cursor: pointer;
   display: inline-block;
   font-family: -apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
-  font-size: 14px;
   font-weight: 600;
   line-height: 20px;
-  padding: 6px 16px;
   position: relative;
   text-align: center;
   text-decoration: none;
@@ -66,6 +64,8 @@
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
+  font-size: 20px;
+  padding: 15px 25px;
 }
 
 .button-3:focus:not(:focus-visible):not(.focus-visible) {
