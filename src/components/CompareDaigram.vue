@@ -79,6 +79,7 @@ methods: {
     syncViewbox(b, a);
   },
 
+  // creates canvas for each side.
   createViewers(left, right) {
     var sides = {};
 
@@ -444,49 +445,49 @@ mounted() {
   this.loadDiagram("left", { url: this.leftBPMNUrl });
   this.loadDiagram("right", { url: this.rightBPMNUrl });
 
-  $(".drop-zone").each(function () {
-    var node = this,
-      element = $(node);
-      console.log('==================>', node, element)
-    element.append('<div class="drop-marker" />');
+  // $(".drop-zone").each(function () {
+  //   var node = this,
+  //     element = $(node);
+  //     console.log('==================>', node, element)
+  //   element.append('<div class="drop-marker" />');
 
-    function removeMarker() {
-      $(".drop-zone").removeClass("dropping");
-    }
+  //   function removeMarker() {
+  //     $(".drop-zone").removeClass("dropping");
+  //   }
 
-    function handleFileSelect(e) {
-      e.stopPropagation();
-      e.preventDefault();
+  //   function handleFileSelect(e) {
+  //     e.stopPropagation();
+  //     e.preventDefault();
 
-      var files = e.dataTransfer.files;
-      this.openFile(files[0], element.attr("target"), this.openDiagram);
+  //     var files = e.dataTransfer.files;
+  //     this.openFile(files[0], element.attr("target"), this.openDiagram);
 
-      removeMarker();
-    }
+  //     removeMarker();
+  //   }
 
-    function handleDragOver(e) {
-      removeMarker();
+  //   function handleDragOver(e) {
+  //     removeMarker();
 
-      e.stopPropagation();
-      e.preventDefault();
+  //     e.stopPropagation();
+  //     e.preventDefault();
 
-      element.addClass("dropping");
+  //     element.addClass("dropping");
 
-      e.dataTransfer.dropEffect = "copy";
-    }
+  //     e.dataTransfer.dropEffect = "copy";
+  //   }
 
-    function handleDragLeave(e) {
-      removeMarker();
-    }
+  //   function handleDragLeave(e) {
+  //     removeMarker();
+  //   }
 
-    node.addEventListener("dragover", handleDragOver, false);
-    node.ownerDocument.body.addEventListener("dragover", handleDragLeave, false);
+  //   node.addEventListener("dragover", handleDragOver, false);
+  //   node.ownerDocument.body.addEventListener("dragover", handleDragLeave, false);
 
-    node.addEventListener("drop", handleFileSelect, false);
-  });
-  $(".file").on("change", (e) => {
-    this.openFile(e.target.files[0], $(this).attr("target"), this.openDiagram);
-  });
+  //   node.addEventListener("drop", handleFileSelect, false);
+  // });
+  // $(".file").on("change", (e) => {
+  //   this.openFile(e.target.files[0], $(this).attr("target"), this.openDiagram);
+  // });
 
   $("#changes-overview .show-hide-toggle").click(() => {
     $("#changes-overview").toggleClass("collapsed");

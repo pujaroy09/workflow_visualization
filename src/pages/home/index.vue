@@ -6,7 +6,7 @@
             <span class="work">Workflow Visualation</span>
             <span class="compare">compare and visualize workflow that is intractive at real time</span>
             <div class="button-container">
-                <input @click="$router.push('workflow_visulization')" class="button-3 color-yellow" type="button" value="Visualize Workflow" />
+                <input @click="$router.push('workflow_visualization')" class="button-3 color-yellow" type="button" value="Visualize Workflow" />
                 <input @click="$router.push('workflow_comparison')" class="button-3" type="button" value="Compare Workflow" />
             </div>
         </div>

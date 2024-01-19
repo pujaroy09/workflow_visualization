@@ -8,7 +8,7 @@ const router = createRouter({
   routes: [
     { path: '/', redirect: "/home" },
     { path: '/home', component: Home },
-    { path: '/workflow_visulization', component: WV },
+    { path: '/workflow_visualization', component: WV },
     { path: '/workflow_comparison', component: WC },
   ]
 })
