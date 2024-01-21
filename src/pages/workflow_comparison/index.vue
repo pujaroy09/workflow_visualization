@@ -1,8 +1,11 @@
 <script>
 import CompareDaigram from '../../components/CompareDaigram.vue';
+import OverlapDiagram from '../../components/OverlapDiagram.vue';
 
 export default {
   components: { CompareDaigram },
+  components: { OverlapDiagram },
+
   data() {
       return {
         type1: "rcs",
@@ -16,6 +19,7 @@ export default {
         bakeryDepartments2: ['Pizza', 'Cake', 'Coffee'],
         selectedBakeryDepartment2: "",
         formSubmitted: false,
+        formOverlay: false,
         selectedDept1: "",
         selectedDept2: "",
         leftBpmn: '',
@@ -23,14 +27,22 @@ export default {
       };
     },
     methods: {
-      compare: function () {
+      compare: function (buttonType) {
         this.selectedDept1 = this.selectedBakeryDepartment1 || this.selectedRcsDepartment1;
-        this.selectedDept2 = this.selectedBakeryDepartment2 || this.selectedRcsDepartment2;
-        console.log(this.selectedDept1, this.selectedDept2, this.type1, this.type2)
-        this.leftBpmn = `../../public/${this.type1}-${this.selectedDept1}.bpmn`;
-        this.rightBpmn = `../../public/${this.type2}-${this.selectedDept2}.bpmn`;
-        console.log(this.leftBpmn, this.rightBpmn);
-        this.formSubmitted = true
+          this.selectedDept2 = this.selectedBakeryDepartment2 || this.selectedRcsDepartment2;
+          console.log(this.selectedDept1, this.selectedDept2, this.type1, this.type2)
+          this.leftBpmn = `../../public/${this.type1}-${this.selectedDept1}.bpmn`;
+          this.rightBpmn = `../../public/${this.type2}-${this.selectedDept2}.bpmn`;
+          console.log(this.leftBpmn, this.rightBpmn);
+        if (buttonType == "compare"){
+          
+          this.formSubmitted = true
+        }
+        else{
+          this.formOverlay = true
+        }
+         
+        
         
       },
       onChange1(type) {
@@ -52,7 +64,7 @@ export default {
       <div class="parent-container">
         <h2>Workflow Comparison</h2>
 
-        <div class="form-container" v-if="!formSubmitted">
+        <div class="form-container" v-if="!(formSubmitted || formOverlay)">
             <!-- Form 1 -->
             <form>
             <h3>Information:</h3>
@@ -102,12 +114,22 @@ export default {
         </div>
                          
         <input
-            v-if="!formSubmitted" 
+            v-if="!(formSubmitted || formOverlay)" 
             class="submit" 
             type="button" 
             value="Compare"
-            @click="compare"
-        >   
+            @click="compare('compare')"
+        > 
+        
+        <input
+            v-if="!(formOverlay || formSubmitted)" 
+            class="submit1" 
+            type="button" 
+            value="Overlay"
+            @click="compare('overlay')"
+        >
+        
+        
 
         <!-- <router-link to="/home">Home</router-link> -->
       </div>
@@ -115,6 +137,9 @@ export default {
     </div>
     <div v-if="formSubmitted" class="form-data">
           <compare-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></compare-daigram>
+    </div>
+    <div v-if="formOverlay" class="form-data">
+          <overlay-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></overlay-daigram>
     </div>
   </header>
   <router-link to="/home">Home</router-link>
@@ -160,6 +185,16 @@ form {
   }
 
   .submit {
+    font-size: 15px;
+    color: #fff;
+    background: #222;
+    padding: 6px 12px;
+    border: none;
+    margin-top: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .submit1 {
     font-size: 15px;
     color: #fff;
     background: #222;
