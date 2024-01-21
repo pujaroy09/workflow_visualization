@@ -3,8 +3,7 @@ import CompareDaigram from '../../components/CompareDaigram.vue';
 import OverlapDiagram from '../../components/OverlapDiagram.vue';
 
 export default {
-  components: { CompareDaigram },
-  components: { OverlapDiagram },
+  components: { CompareDaigram, OverlapDiagram },
 
   data() {
       return {
@@ -139,7 +138,7 @@ export default {
           <compare-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></compare-daigram>
     </div>
     <div v-if="formOverlay" class="form-data">
-          <overlay-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></overlay-daigram>
+          <overlap-diagram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></overlap-diagram>
     </div>
   </header>
   <router-link to="/home">Home</router-link>
