@@ -11,6 +11,7 @@
   
   <script>
   import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
+  import BpmnModeler from 'bpmn-js/lib/Modeler';
   
   export default {
     props: {
@@ -35,8 +36,11 @@
         this.loadBPMN(this.leftViewer, this.leftBPMNUrl);
   
         // Initialize the overlay BPMN viewer
-        this.overlayViewer = new BpmnViewer({
+        this.overlayViewer = new BpmnModeler({
           container: '#overlay-container',
+          keyboard: {
+            bindTo: window
+          }
         });
   
         // Load and display the overlay BPMN
@@ -45,7 +49,7 @@
       loadBPMN(viewer, bpmnUrl) {
         fetch(bpmnUrl)
           .then(response => response.text())
-          .then(xml => viewer.importXML(xml));
+          .then(xml => {viewer.importXML(xml); viewer.get('canvas').zoom('fit-viewport');});
       },
     },
     mounted() {
