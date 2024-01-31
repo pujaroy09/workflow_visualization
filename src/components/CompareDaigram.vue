@@ -500,7 +500,6 @@ mounted() {
 html,
 body,
 #container {
-  font-family: Arial, Helvetica, sans-serif;
   font-size: 12px;
   height: 100%;
   margin: 0;

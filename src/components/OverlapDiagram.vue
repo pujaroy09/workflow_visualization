@@ -30,10 +30,13 @@
         // Initialize the static BPMN viewer
         this.leftViewer = new BpmnViewer({
           container: '#static-canvas',
+          keyboard: {
+            bindTo: window
+          }
         });
   
         // Load and display the static BPMN
-        this.loadBPMN(this.leftViewer, this.leftBPMNUrl);
+        this.loadBPMN(this.leftViewer, this.leftBPMNUrl, "static-canvas");
   
         // Initialize the overlay BPMN viewer
         this.overlayViewer = new BpmnModeler({
@@ -44,12 +47,16 @@
         });
   
         // Load and display the overlay BPMN
-        this.loadBPMN(this.overlayViewer, this.rightBPMNUrl);
+        this.loadBPMN(this.overlayViewer, this.rightBPMNUrl, "overlay-container");
       },
-      loadBPMN(viewer, bpmnUrl) {
+      loadBPMN(viewer, bpmnUrl, name) {
         fetch(bpmnUrl)
           .then(response => response.text())
-          .then(xml => {viewer.importXML(xml); viewer.get('canvas').zoom('fit-viewport');});
+          .then(xml => {
+            viewer.importXML(xml);
+            console.log(viewer.get('canvas'));
+            viewer.get('canvas').zoom('fit-viewport');
+          });
       },
     },
     mounted() {
@@ -73,8 +80,7 @@
   }
   
   #static-canvas {
-    margin-top: 20px;
-    padding: 10px 40px;
+    padding: 20px 20px;
     box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
     background: #fff;
   }

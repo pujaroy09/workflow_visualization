@@ -50,7 +50,6 @@ html, body, #canvas, #canvas > div {
 
     body {
       padding: 0px;
-      background: rgb(243, 244, 246);
     }
     #canvas {
       margin-top: 20px;

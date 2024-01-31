@@ -40,7 +40,8 @@ export default {
         else{
           this.formOverlay = true
         }
-         
+        document.querySelector('body').style.color = "black";
+        document.querySelector('body').style.backgroundImage = "unset";
         
         
       },
@@ -61,51 +62,53 @@ export default {
   <header>
     <div class="wrapper">
       <div class="parent-container">
-        <h2>Workflow Comparison</h2>
+        <h1>Workflow Comparison</h1>
+        <div class="subtext-container">
+          <span>Compare - One Above the Other</span>
+          <span>Overlay - One Overlaps the Other</span>
+        </div>
 
         <div class="form-container" v-if="!(formSubmitted || formOverlay)">
             <!-- Form 1 -->
             <form>
-            <h3>Information:</h3>
-            <span>Workflow Type</span>
-            <input type="radio" v-model="type1" @change="onChange1(type1)" value="rcs">RCS
-            <input type="radio" v-model="type1" @change="onChange1(type1)" value="bakery">Bakery
-           
-            <br>
+              <div>
+                <span>Workflow Type</span>
+                <input type="radio" v-model="type1" @change="onChange1(type1)" value="rcs">RCS
+                <input type="radio" v-model="type1" @change="onChange1(type1)" value="bakery">Bakery
+              </div>
             <div v-if="type1 === 'rcs'">
                 <span>Department</span>
                 <select name="" id="" v-model="selectedRcsDepartment1">
-                  <option value="" disabled>Select a department</option>
+                  <option value="" disabled>Top or Back</option>
                 <option v-for="department in rcsDepartments1" :key="department">{{ department }}</option>
                 </select><br>
             </div>
             <div v-if="type1 === 'bakery'">
                 <span>Menu</span>
                 <select name="" id="" v-model="selectedBakeryDepartment1">
-                <option value="" disabled>Select a department</option>
+                <option value="" disabled>Top or Back</option>
                 <option v-for="department in bakeryDepartments1" :key="department">{{ department }}</option>
                 </select><br>
             </div>
             </form>
             <!-- Form 2 -->
             <form>
-            <h3>Information:</h3>
-            <span>Workflow Type</span>
-            <input type="radio" @change="onChange2(type2)" v-model="type2" value="rcs">RCS
-            <input type="radio" @change="onChange2(type2)" v-model="type2" value="bakery">Bakery
-          
-            <br>
+              <div>
+                <span>Workflow Type</span>
+                <input type="radio" @change="onChange2(type2)" v-model="type2" value="rcs">RCS
+                <input type="radio" @change="onChange2(type2)" v-model="type2" value="bakery">Bakery
+              </div>
             <div v-if="type2 === 'rcs'">
                 <span>Department</span>
                 <select name="" id="" v-model="selectedRcsDepartment2">
-                <option value="" disabled>Select a department</option>
+                <option value="" disabled>Bottom or Front</option>
                 <option v-for="department in rcsDepartments2" :key="department">{{ department }}</option>
                 </select><br>
             </div>
             <div v-if="type2 === 'bakery'">
                 <span>Menu</span>
                 <select name="" id="" v-model="selectedBakeryDepartment2">
-                <option value="" disabled>Select a department</option>
+                <option value="" disabled>Bottom or Front</option>
                 <option v-for="department in bakeryDepartments2" :key="department">{{ department }}</option>
                 </select><br>
             </div>
@@ -145,6 +148,9 @@ export default {
 </template>
 
 <style scoped>
+body {
+  background: #fff;
+}
 p {
   font-weight: bold;
   text-transform: capitalize;
@@ -158,6 +164,10 @@ h2 {
     height: 90vh;
 }
 form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     padding: 10px;
     border: 2px solid black;
     border-radius: 5px;
@@ -208,8 +218,8 @@ form {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 10px 0;
-    width: 30%;
+    padding: 30px 0;
+    width: 50%;
   }
   .parent-container {
     display: flex;
@@ -217,7 +227,19 @@ form {
     justify-content: center;
     flex-flow: column;
   }
+  .parent-container h1 {
+    font-size: 45px;
+  }
   header {
     height: 100vh;
+  }
+  .subtext-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .subtext-container span {
+    margin: 0;
   }
 </style>
