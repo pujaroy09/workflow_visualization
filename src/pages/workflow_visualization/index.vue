@@ -136,4 +136,9 @@ form {
     cursor: pointer;
     border-radius: 5px;
   }
+  body {
+    background-image: linear-gradient(45deg, rgba(161, 71, 70, 0.8), rgba(1, 8, 15, 0)), url(/src/assets/home_cover.jpg);
+    color: white;
+    font-family: ui-rounded !important;
+  }
 </style>
