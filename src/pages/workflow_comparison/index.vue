@@ -54,6 +54,11 @@ export default {
         this.selectedRcsDepartment2 = '';
       }
     },
+    mounted() {
+      document.querySelector('body').style.color = "white";
+      document.querySelector('body').style.backgroundImage = 
+      "linear-gradient(45deg, rgba(161, 71, 70, 0.8), rgba(1, 8, 15, 0)), url(/src/assets/home_cover.jpg)";
+    }
 }
 
 </script>
@@ -61,14 +66,14 @@ export default {
 <template>
   <header>
     <div class="wrapper">
-      <div class="parent-container">
+      <div class="parent-container" v-if="!(formSubmitted || formOverlay)">
         <h1>Workflow Comparison</h1>
         <div class="subtext-container">
           <span>Compare - One Above the Other</span>
           <span>Overlay - One Overlaps the Other</span>
         </div>
 
-        <div class="form-container" v-if="!(formSubmitted || formOverlay)">
+        <div class="form-container">
             <!-- Form 1 -->
             <form>
               <div>
