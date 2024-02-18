@@ -10,11 +10,12 @@
   },
   "dependencies": {
     "bpmn-js": "^16.1.0",
-    "vue": "^3.3.10",
-    "vue-router": "^4.2.5",
+    "bpmn-js-color-picker": "^0.7.0",
     "bpmn-js-differ": "2.0.2",
     "jquery": "3.5.1",
-    "min-dash": "3.5.2"
+    "min-dash": "3.5.2",
+    "vue": "^3.3.10",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.1",

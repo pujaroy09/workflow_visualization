@@ -12,6 +12,7 @@
   <script>
   import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
   import BpmnModeler from 'bpmn-js/lib/Modeler';
+  import BpmnColorPickerModule from 'bpmn-js-color-picker';
   
   export default {
     props: {
@@ -43,7 +44,10 @@
           container: '#overlay-container',
           keyboard: {
             bindTo: window
-          }
+          },
+          additionalModules: [
+            BpmnColorPickerModule // to add options for colors.
+          ]
         });
   
         // Load and display the overlay BPMN
@@ -53,9 +57,16 @@
         fetch(bpmnUrl)
           .then(response => response.text())
           .then(xml => {
-            viewer.importXML(xml);
-            console.log(viewer.get('canvas'));
-            viewer.get('canvas').zoom('fit-viewport');
+            viewer.importXML(xml).then(function(result) {
+              const { warnings } = result;
+              console.log('success !', warnings);
+              viewer.get('canvas').zoom('fit-viewport');
+              }).catch(function(err) {
+
+              const { warnings, message } = err;
+
+              console.log('something went wrong:', warnings, message);
+            });
           });
       },
     },
