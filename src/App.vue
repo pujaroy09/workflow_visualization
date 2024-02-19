@@ -4,11 +4,17 @@
             <ul>
             <li><a @click="$router.go(-1)">Back</a></li>
             <li><a @click="$router.push('home')">Home</a></li>
+            <li><a @click="eventBus.emit('resetDiagram')">Reset</a></li>
             </ul>
         </div>
     </div>
 <router-view></router-view>
 </template>
+<script>
+export default {
+    inject: ["eventBus"],
+}
+</script>
 <style>
     .navbar {
         align-items: center;

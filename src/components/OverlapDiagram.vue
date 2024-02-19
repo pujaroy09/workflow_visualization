@@ -1,9 +1,9 @@
 <template>
-    <div class="canvas-container">
+    <div class="canvas-container" v-if="overlayVisible">
       <div id="static-canvas" class="canvas">
         <!-- Static BPMN Canvas -->
       </div>
-      <div id="overlay-container" class="overlay-container" v-if="overlayVisible">
+      <div id="overlay-container" class="overlay-container">
         <!-- Overlay BPMN Canvas -->
       </div>
     </div>
@@ -19,6 +19,7 @@
       leftBPMNUrl: String,
       rightBPMNUrl: String,
     },
+    inject: ["eventBus"],
     data() {
       return {
         overlayVisible: true, // Set to true to initially show the overlay
@@ -72,6 +73,17 @@
     },
     mounted() {
       this.initializeViewers();
+      this.eventBus.on("resetDiagram", () => {
+        this.overlayVisible = false;
+        this.leftViewer= '';
+        this.overlayViewer= '';
+        setTimeout(()=> {
+          this.overlayVisible = true;
+        }, 100)
+        setTimeout(()=> {
+          this.initializeViewers();
+        }, 200)
+      });
     },
   };
   </script>
