@@ -41,6 +41,9 @@ export default {
         $.get(`../../public/${this.type}-${this.department}.bpmn`, this.showDiagram, 'text');
       }, 200)
     });
+  },
+  unmounted() {
+    this.eventBus.off('resetDiagram');
   }
 };
 

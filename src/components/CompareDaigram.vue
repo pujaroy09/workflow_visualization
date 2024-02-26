@@ -153,7 +153,6 @@ methods: {
     var viewer = this.getViewer(side);
     
     const done = (err)=> {
-      console.log('---------->', err, side, viewer)
       this.diagramLoaded(err, side, viewer);
     }
 
@@ -176,7 +175,6 @@ methods: {
 
   showDiff(viewerOld, viewerNew) {
     var result = diff(viewerOld.getDefinitions(), viewerNew.getDefinitions());
-    console.log('---------------->>>>>>>');
     forEach(this.viewers, this.clearDiffs);
 
     $.each(result._removed, (i, obj) => {
@@ -441,6 +439,12 @@ methods: {
   }
 },
 mounted() {
+  document.getElementById('canvas-left').innerHTML = '';
+  document.getElementById('canvas-right').innerHTML = '';
+  const resetButton = document.getElementById('reset-button');
+  if(resetButton) {
+    resetButton.style.display = "none";
+  }
   this.viewers = this.createViewers("left", "right");
   this.loadDiagram("left", { url: this.leftBPMNUrl });
   this.loadDiagram("right", { url: this.rightBPMNUrl });

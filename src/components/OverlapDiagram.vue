@@ -85,6 +85,9 @@
         }, 200)
       });
     },
+    unmounted() {
+      this.eventBus.off('resetDiagram');
+    }
   };
   </script>
   
