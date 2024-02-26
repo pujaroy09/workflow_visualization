@@ -2,6 +2,7 @@
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 
 export default {
+  inject: ["eventBus"],
   props:{
     type: String,
     department: String
@@ -31,6 +32,18 @@ export default {
   },
   mounted() {
     $.get(`../../public/${this.type}-${this.department}.bpmn`, this.showDiagram, 'text');
+    this.eventBus.on("resetDiagram", () => {
+      document.getElementById("canvas").innerHTML = '';
+      setTimeout(()=> {
+        document.getElementById("canvas").innerHTML = '';
+      }, 100)
+      setTimeout(()=> {
+        $.get(`../../public/${this.type}-${this.department}.bpmn`, this.showDiagram, 'text');
+      }, 200)
+    });
+  },
+  unmounted() {
+    this.eventBus.off('resetDiagram');
   }
 };
 
@@ -50,7 +63,6 @@ html, body, #canvas, #canvas > div {
 
     body {
       padding: 0px;
-      background: rgb(243, 244, 246);
     }
     #canvas {
       margin-top: 20px;

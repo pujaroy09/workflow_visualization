@@ -17,13 +17,20 @@ export default {
     },
     methods: {
       submitForm: function () {
-        this.formSubmitted = true
+        this.formSubmitted = true;
+        document.querySelector('body').style.color = "black";
+        document.querySelector('body').style.backgroundImage = "unset";
       },
       onChange() {
         this.selectedBakeryDepartment = '';
         this.selectedRcsDepartment = '';
       },
     },
+    mounted() {
+      document.querySelector('body').style.color = "white";
+      document.querySelector('body').style.backgroundImage = 
+      "linear-gradient(45deg, rgba(161, 71, 70, 0.8), rgba(1, 8, 15, 0)), url(/src/assets/home_cover.jpg)";
+    }
 }
 
 </script>
@@ -32,9 +39,11 @@ export default {
   <header>
     <div class="wrapper">
       <div>
-        <h2>Workflow Visualization</h2>
+        <h1 class="header-text">Workflow Visualization</h1>
+        <div class="subtext-container">
+          <span>This page is interactive and allows to do modfication</span>
+        </div>
         <form @submit.prevent="submitForm" v-if="!formSubmitted">
-          <h3>Information:</h3>
           <span>Workflow Type</span>
           <input type="radio" @change="onChange()" v-model="type" value="rcs">RCS
           <input type="radio" @change="onChange()" v-model="type" value="bakery">Bakery
@@ -49,14 +58,14 @@ export default {
             <select name="" id="" v-model="selectedProfessor">
               <option value="" disabled>Select a professor</option>
               <option v-for="professor in professors" :key="professor">{{ professor }}</option>
-            </select><br>
+            </select><br><br>
           </div>
           <div v-if="type === 'bakery'">
             <span>Menu</span>
             <select name="" id="" v-model="selectedBakeryDepartment">
               <option value="" disabled>Select a menu</option>
               <option v-for="department in bakeryDepartments" :key="department">{{ department }}</option>
-            </select><br>
+            </select><br><br>
           </div>
           
           <input 
@@ -85,11 +94,20 @@ export default {
 </template>
 
 <style scoped>
+.header-text {
+  font-size: 45px;
+}
+.subtext-container {
+text-align: center;
+}
+body {
+  background: #fff;
+}
 p {
   font-weight: bold;
   text-transform: capitalize;
 }
-h2 {
+h1 {
   text-align: center;
     font-weight: bold;
 }
@@ -97,8 +115,7 @@ h2 {
     padding: 0 40px;
 }
 form {
-    padding: 10px;
-    border: 2px solid black;
+    padding: 30px 10px;
     border-radius: 5px;
     text-align: center;
   }
@@ -123,5 +140,10 @@ form {
     margin-top: 8px;
     cursor: pointer;
     border-radius: 5px;
+  }
+  body {
+    background-image: linear-gradient(45deg, rgba(161, 71, 70, 0.8), rgba(1, 8, 15, 0)), url(/src/assets/home_cover.jpg);
+    color: white;
+    font-family: ui-rounded !important;
   }
 </style>
