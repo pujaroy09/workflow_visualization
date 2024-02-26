@@ -137,9 +137,7 @@ methods: {
     if (err.error) {
       console.error("load error", err);
     }
-
-    this.setLoading(viewer, err || false);
-    
+    this.setLoading(viewer, err.error || false);
     if (this.allDiagramsLoaded()) {
       // sync viewboxes
       var other = this.getViewer(side === "left" ? "right" : "left");

@@ -108,7 +108,7 @@ export default {
               <span> Or </span>
               <div>
                 <span>Upload</span>
-                <input class="file" type="file" target="left" style="width: 90px;" @change="fileChange1('left', $event)"/>
+                <input class="file" type="file" target="left" @change="fileChange1('left', $event)"/>
               </div>
             </form>
             <!-- Form 2 -->
@@ -135,7 +135,7 @@ export default {
               <span> Or </span>
               <div>
                 <span>Upload</span>
-                <input class="file" type="file" target="right" style="width: 90px;" @change="fileChange1('right', $event)"/>
+                <input class="file" type="file" target="right" @change="fileChange1('right', $event)"/>
               </div>
             </form>
         </div>
@@ -198,8 +198,8 @@ form {
     border-radius: 5px;
     width: 40%;
     min-height: 200px;
-    min-width: 320px;
-    max-width: 320px;
+    min-width: 350px;
+    max-width: 350px;
   }
   form div {
       display: flex;
