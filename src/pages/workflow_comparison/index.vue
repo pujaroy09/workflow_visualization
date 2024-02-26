@@ -23,6 +23,8 @@ export default {
         selectedDept2: "",
         leftBpmn: '',
         rightBpmn: '',
+        leftFile: '',
+        rightFile: '',
       };
     },
     methods: {
@@ -52,6 +54,14 @@ export default {
       onChange2(type) {
         this.selectedBakeryDepartment2 = '';
         this.selectedRcsDepartment2 = '';
+      },
+      fileChange1(side, event) {
+        if(side === 'left') {
+          this.leftFile = event;
+        } else {
+          this.rightFile = event;
+        }
+        
       }
     },
     mounted() {
@@ -81,20 +91,25 @@ export default {
                 <input type="radio" v-model="type1" @change="onChange1(type1)" value="rcs">RCS
                 <input type="radio" v-model="type1" @change="onChange1(type1)" value="bakery">Bakery
               </div>
-            <div v-if="type1 === 'rcs'">
-                <span>Department</span>
-                <select name="" id="" v-model="selectedRcsDepartment1">
+              <div v-if="type1 === 'rcs'">
+                  <span>Department</span>
+                  <select name="" id="" v-model="selectedRcsDepartment1">
+                    <option value="" disabled>Top or Back</option>
+                  <option v-for="department in rcsDepartments1" :key="department">{{ department }}</option>
+                  </select><br>
+              </div>
+              <div v-if="type1 === 'bakery'">
+                  <span>Menu</span>
+                  <select name="" id="" v-model="selectedBakeryDepartment1">
                   <option value="" disabled>Top or Back</option>
-                <option v-for="department in rcsDepartments1" :key="department">{{ department }}</option>
-                </select><br>
-            </div>
-            <div v-if="type1 === 'bakery'">
-                <span>Menu</span>
-                <select name="" id="" v-model="selectedBakeryDepartment1">
-                <option value="" disabled>Top or Back</option>
-                <option v-for="department in bakeryDepartments1" :key="department">{{ department }}</option>
-                </select><br>
-            </div>
+                  <option v-for="department in bakeryDepartments1" :key="department">{{ department }}</option>
+                  </select><br>
+              </div>
+              <span> Or </span>
+              <div>
+                <span>Upload</span>
+                <input class="file" type="file" target="left" style="width: 90px;" @change="fileChange1('left', $event)"/>
+              </div>
             </form>
             <!-- Form 2 -->
             <form>
@@ -103,20 +118,25 @@ export default {
                 <input type="radio" @change="onChange2(type2)" v-model="type2" value="rcs">RCS
                 <input type="radio" @change="onChange2(type2)" v-model="type2" value="bakery">Bakery
               </div>
-            <div v-if="type2 === 'rcs'">
-                <span>Department</span>
-                <select name="" id="" v-model="selectedRcsDepartment2">
-                <option value="" disabled>Bottom or Front</option>
-                <option v-for="department in rcsDepartments2" :key="department">{{ department }}</option>
-                </select><br>
-            </div>
-            <div v-if="type2 === 'bakery'">
-                <span>Menu</span>
-                <select name="" id="" v-model="selectedBakeryDepartment2">
-                <option value="" disabled>Bottom or Front</option>
-                <option v-for="department in bakeryDepartments2" :key="department">{{ department }}</option>
-                </select><br>
-            </div>
+              <div v-if="type2 === 'rcs'">
+                  <span>Department</span>
+                  <select name="" id="" v-model="selectedRcsDepartment2">
+                  <option value="" disabled>Bottom or Front</option>
+                  <option v-for="department in rcsDepartments2" :key="department">{{ department }}</option>
+                  </select><br>
+              </div>
+              <div v-if="type2 === 'bakery'">
+                  <span>Menu</span>
+                  <select name="" id="" v-model="selectedBakeryDepartment2">
+                  <option value="" disabled>Bottom or Front</option>
+                  <option v-for="department in bakeryDepartments2" :key="department">{{ department }}</option>
+                  </select><br>
+              </div>
+              <span> Or </span>
+              <div>
+                <span>Upload</span>
+                <input class="file" type="file" target="right" style="width: 90px;" @change="fileChange1('right', $event)"/>
+              </div>
             </form>
         </div>
                          
@@ -143,10 +163,10 @@ export default {
       
     </div>
     <div v-if="formSubmitted" class="form-data">
-          <compare-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></compare-daigram>
+          <compare-daigram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn" :leftFile="leftFile" :rightFile="rightFile"></compare-daigram>
     </div>
     <div v-if="formOverlay" class="form-data">
-          <overlap-diagram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn"></overlap-diagram>
+          <overlap-diagram :leftBPMNUrl = "leftBpmn" :rightBPMNUrl = "rightBpmn" :leftFile="leftFile" :rightFile="rightFile"></overlap-diagram>
     </div>
   </header>
   <router-link to="/home">Home</router-link>
@@ -178,8 +198,8 @@ form {
     border-radius: 5px;
     width: 40%;
     min-height: 200px;
-    min-width: 270px;
-    max-width: 270px;
+    min-width: 320px;
+    max-width: 320px;
   }
   form div {
       display: flex;

@@ -18,6 +18,8 @@
     props: {
       leftBPMNUrl: String,
       rightBPMNUrl: String,
+      leftFile: File,
+      rightFile: File
     },
     inject: ["eventBus"],
     data() {
@@ -38,7 +40,12 @@
         });
   
         // Load and display the static BPMN
-        this.loadBPMN(this.leftViewer, this.leftBPMNUrl, "static-canvas");
+        
+        if(this.leftFile) {
+          this.handleFileSelect(this.leftViewer, this.leftFile, "static-canvas");
+        } else {
+          this.loadBPMN(this.leftViewer, this.leftBPMNUrl, "static-canvas");
+        }
   
         // Initialize the overlay BPMN viewer
         this.overlayViewer = new BpmnModeler({
@@ -52,9 +59,41 @@
         });
   
         // Load and display the overlay BPMN
-        this.loadBPMN(this.overlayViewer, this.rightBPMNUrl, "overlay-container");
+        if(this.rightFile) {
+          this.handleFileSelect(this.overlayViewer, this.rightFile, "overlay-container");
+        } else {
+          this.loadBPMN(this.overlayViewer, this.rightBPMNUrl, "overlay-container");
+        }
+      },
+      openFile(viewer, file, target, done) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var xml = e.target.result;
+          done(viewer, {xml: xml}, target);
+        };
+
+        reader.readAsText(file);
+      },
+      handleFileSelect(viewer, e, side) {
+        var files = e.target.files;
+        this.openFile(viewer, files[0], side, this.loadBPMN);
       },
       loadBPMN(viewer, bpmnUrl, name) {
+        if(bpmnUrl.xml) {
+          viewer.importXML(bpmnUrl.xml).then(function(result) {
+              const { warnings } = result;
+              console.log('success !', warnings);
+              viewer.get('canvas').zoom('fit-viewport');
+              return;
+              }).catch(function(err) {
+
+              const { warnings, message } = err;
+
+              console.log('something went wrong:', warnings, message);
+              return;
+            });
+        }
         fetch(bpmnUrl)
           .then(response => response.text())
           .then(xml => {

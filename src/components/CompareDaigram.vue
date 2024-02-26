@@ -41,7 +41,9 @@ data() {
 },
 props: {
     leftBPMNUrl: String,
-    rightBPMNUrl: String
+    rightBPMNUrl: String,
+    leftFile: File,
+    rightFile: File
 },
 
 methods: {
@@ -136,7 +138,7 @@ methods: {
       console.error("load error", err);
     }
 
-    this.setLoading(viewer, err.error || false);
+    this.setLoading(viewer, err || false);
     
     if (this.allDiagramsLoaded()) {
       // sync viewboxes
@@ -149,7 +151,7 @@ methods: {
   // we use $.ajax to load the diagram.
   // make sure you run the application via web-server (ie. connect (node) or asdf (ruby))
 
-  loadDiagram(side, diagram) {
+  async loadDiagram(side, diagram) {
     var viewer = this.getViewer(side);
     
     const done = (err)=> {
@@ -158,9 +160,16 @@ methods: {
 
     this.diagramLoading(side, viewer);
 
-    if (diagram.xml) {
-      return viewer.importXML(diagram.xml, done);
+    try {
+      if (diagram.xml) {
+        await viewer.importXML(diagram.xml);
+        done(null);
+        return;
+      }
+    } catch {
+
     }
+    
 
     $.get(diagram.url, function (xml) {
       
@@ -436,6 +445,10 @@ methods: {
         });
       });
     });
+  },
+  handleFileSelect(e) {
+    var files = e.target.files;
+    this.openFile(files[0], e.target.attributes.target.value, this.openDiagram);
   }
 },
 mounted() {
@@ -446,8 +459,15 @@ mounted() {
     resetButton.style.display = "none";
   }
   this.viewers = this.createViewers("left", "right");
-  this.loadDiagram("left", { url: this.leftBPMNUrl });
-  this.loadDiagram("right", { url: this.rightBPMNUrl });
+  if(this.leftFile || this.rightFile) {
+    setTimeout(()=> {
+      this.handleFileSelect(this.leftFile);
+      this.handleFileSelect(this.rightFile);
+    }, 0)
+  } else {
+    this.loadDiagram("left", { url: this.leftBPMNUrl });
+    this.loadDiagram("right", { url: this.rightBPMNUrl });
+  }
 
   // $(".drop-zone").each(function () {
   //   var node = this,
