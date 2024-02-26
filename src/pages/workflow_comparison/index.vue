@@ -144,7 +144,7 @@ export default {
             v-if="!(formSubmitted || formOverlay)" 
             class="submit" 
             type="button" 
-            value="Compare"
+            value="Top Bottom Comparison"
             @click="compare('compare')"
         > 
         
@@ -152,7 +152,7 @@ export default {
             v-if="!(formOverlay || formSubmitted)" 
             class="submit1" 
             type="button" 
-            value="Overlay"
+            value="Overlay Comparison"
             @click="compare('overlay')"
         >
         
