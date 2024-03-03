@@ -18,10 +18,12 @@
         <div class="canvas" id="canvas-right"></div>
       </div>
 
-      <div id="changes-overview" class="collapsed">
+      <!-- "List of Changes" -->
+      
+      <!-- <div id="changes-overview" class="collapsed">
         <div class="io-control show-hide-toggle">List of Changes</div>
         <div class="io-control changes"></div>
-      </div>
+      </div> -->
     </div>
 </template>
 

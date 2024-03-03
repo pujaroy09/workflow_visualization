@@ -27,6 +27,20 @@ export default {
         rightFile: '',
       };
     },
+    computed: {
+      checkButtonValidation() {
+        return (!((this.selectedRcsDepartment1 && this.selectedRcsDepartment2) || 
+        (this.selectedBakeryDepartment1 && this.selectedBakeryDepartment2) ||
+        (this.leftFile && this.rightFile) ||
+        (this.selectedRcsDepartment1 && this.selectedBakeryDepartment2) ||
+        (this.selectedRcsDepartment2 && this.selectedBakeryDepartment1) ||
+        (this.selectedRcsDepartment1 && this.rightFile) ||
+        (this.selectedRcsDepartment2 && this.leftFile) ||
+        (this.selectedBakeryDepartment1 && this.rightFile) ||
+        (this.selectedBakeryDepartment2 && this.leftFile)
+        ));
+      }
+    },
     methods: {
       compare: function (buttonType) {
         this.selectedDept1 = this.selectedBakeryDepartment1 || this.selectedRcsDepartment1;
@@ -141,6 +155,7 @@ export default {
         </div>
                          
         <input
+            :disabled="checkButtonValidation"
             v-if="!(formSubmitted || formOverlay)" 
             class="submit" 
             type="button" 
@@ -149,6 +164,7 @@ export default {
         > 
         
         <input
+            :disabled="checkButtonValidation"
             v-if="!(formOverlay || formSubmitted)" 
             class="submit1" 
             type="button" 
@@ -173,6 +189,9 @@ export default {
 </template>
 
 <style scoped>
+input[type="button"]:disabled {
+  cursor: not-allowed;
+}
 body {
   background: #fff;
 }

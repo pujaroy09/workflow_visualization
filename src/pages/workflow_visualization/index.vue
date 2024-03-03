@@ -69,6 +69,7 @@ export default {
           </div>
           
           <input 
+            :disabled="!((selectedRcsDepartment && selectedProfessor) || selectedBakeryDepartment)"
             class="submit" 
             type="submit" 
             value="Submit"
@@ -113,6 +114,10 @@ h1 {
 }
 .form-data {
     padding: 0 40px;
+    position: relative;
+}
+input[type="submit"]:disabled {
+  cursor: not-allowed;
 }
 form {
     padding: 30px 10px;

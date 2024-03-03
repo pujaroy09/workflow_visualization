@@ -7,27 +7,50 @@ export default {
     type: String,
     department: String
   },
+  data() {
+    return {
+      viewer: null,
+    };
+  },
   methods: {
-    showDiagram(xmlData) {
-      var modeler = new BpmnModeler({
+    async downloadBpmnFile() {
+      // Get BPMN XML from the viewer
+      const { xml } = await this.viewer.saveXML({ format: true });
+      this.downloadFile(xml, 'yourBpmnDiagram.bpmn');
+    },
+    downloadFile(content, fileName) {
+      const blob = new Blob([content], { type: 'application/xml' });
+      const link = document.createElement('a');
+
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+
+      // Trigger the download
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+    },
+    async showDiagram(xmlData) {
+      this.viewer = new BpmnModeler({
         container: '#canvas',
         keyboard: {
           bindTo: window
         }
       });
-      modeler.importXML(xmlData).then(function(result) {
+      await this.viewer.importXML(xmlData).then(function(result) {
 
         const { warnings } = result;
 
         console.log('success !', warnings);
-
-        modeler.get('canvas').zoom('fit-viewport');
       }).catch(function(err) {
 
         const { warnings, message } = err;
 
-        console.log('something went wrong:', warnings, message);
+        console.log('something went wrong:', warnings, message, err);
       });
+      this.viewer.get('canvas').zoom('fit-viewport');
     },  
   },
   mounted() {
@@ -52,6 +75,7 @@ export default {
 <template>
   <div id = "canvas">
   </div>
+  <button class="download-button" @click="downloadBpmnFile">Download</button>
 </template>
 
 <style>
@@ -70,6 +94,11 @@ html, body, #canvas, #canvas > div {
       box-shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
       background: #fff;
     }
-
+    .download-button {
+      position: absolute;
+      right: 100px;
+      top: 0;
+      width: 100px;
+    }
     
 </style>

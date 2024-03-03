@@ -6,6 +6,7 @@
       <div id="overlay-container" class="overlay-container">
         <!-- Overlay BPMN Canvas -->
       </div>
+      <button class="download-button" @click="downloadBpmnFile">Download</button>
     </div>
   </template>
   
@@ -30,6 +31,25 @@
       };
     },
     methods: {
+      async downloadBpmnFile() {
+        // Get BPMN XML from the viewer
+        const { xml } = await this.overlayViewer.saveXML({ format: true });
+        this.downloadFile(xml, 'yourBpmnDiagram.bpmn');
+      },
+      downloadFile(content, fileName) {
+        const blob = new Blob([content], { type: 'application/xml' });
+        const link = document.createElement('a');
+
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+
+        // Trigger the download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+      },
       initializeViewers() {
         // Initialize the static BPMN viewer
         this.leftViewer = new BpmnViewer({
@@ -131,7 +151,13 @@
   </script>
   
   <style scoped>
-  .canvas-container {
+.download-button {
+    position: absolute;
+    right: 40px;
+    top: -40px;
+    width: 100px;
+  }
+.canvas-container {
     position: relative;
     height: 100vh;
   }
