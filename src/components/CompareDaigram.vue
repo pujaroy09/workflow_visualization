@@ -163,6 +163,7 @@ methods: {
     try {
       if (diagram.xml) {
         await viewer.importXML(diagram.xml);
+        viewer.get('canvas').zoom('fit-viewport');
         done(null);
         return;
       }
@@ -174,6 +175,7 @@ methods: {
     $.get(diagram.url, function (xml) {
       
       viewer.importXML(xml).then(function(result) {
+        viewer.get('canvas').zoom('fit-viewport');
         done(result);
       }).catch(function(err) {
       });
@@ -459,13 +461,18 @@ mounted() {
     resetButton.style.display = "none";
   }
   this.viewers = this.createViewers("left", "right");
-  if(this.leftFile || this.rightFile) {
+  if(this.leftFile) {
     setTimeout(()=> {
       this.handleFileSelect(this.leftFile);
-      this.handleFileSelect(this.rightFile);
     }, 0)
   } else {
     this.loadDiagram("left", { url: this.leftBPMNUrl });
+  }
+  if(this.rightFile) {
+    setTimeout(()=> {
+      this.handleFileSelect(this.rightFile);
+    }, 0)
+  } else {
     this.loadDiagram("right", { url: this.rightBPMNUrl });
   }
 

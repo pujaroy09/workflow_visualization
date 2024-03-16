@@ -2,7 +2,7 @@
     <div class="navbar" v-if="$route.path !== '/home'">
         <div class="navbar-menu">
             <ul>
-            <li><a @click="$router.go(-1)">Back</a></li>
+            <!-- <li><a @click="$router.go(-1)">Back</a></li> -->
             <li><a @click="$router.push('home')">Home</a></li>
             <li id="reset-button"><a @click="eventBus.emit('resetDiagram')">Reset</a></li>
             </ul>
