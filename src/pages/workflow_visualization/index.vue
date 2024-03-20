@@ -8,7 +8,7 @@ export default {
         type: "rcs",
         formSubmitted: false,
         rcsDepartments: ['Mathematics', 'Statistics', 'Computer Science'],
-        bakeryDepartments: ['Pizza', 'Cake', 'Coffee'],
+        bakeryDepartments: ['Pizza', 'Cake'],
         professors: ['Professor 1', 'Professor 2', 'Professor 3'],
         selectedRcsDepartment: "",
         selectedBakeryDepartment: "",
