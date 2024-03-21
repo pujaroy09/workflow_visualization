@@ -41,7 +41,7 @@ export default {
       <div>
         <h1 class="header-text">Workflow Visualization</h1>
         <div class="subtext-container">
-          <span>This page is interactive and allows to do modfication</span>
+          <span>This page is interactive and allows to do modification</span>
         </div>
         <form @submit.prevent="submitForm" v-if="!formSubmitted">
           <span>Workflow Type</span>

@@ -2,9 +2,9 @@
     <div class="homepage-wrapper">
         <div class = "title">
             <span class="web">Web-based</span> 
-            <span class="int">Intractive</span>
+            <span class="int">Interactive</span>
             <span class="work">Workflow Visualation</span>
-            <span class="compare">compare and visualize workflow that is intractive at real time</span>
+            <span class="compare">compare and visualize workflow that is interactive at real time</span>
             <div class="button-container">
                 <input @click="$router.push('workflow_visualization')" class="button-3 color-yellow" type="button" value="Visualize Workflow" />
                 <input @click="$router.push('workflow_comparison')" class="button-3" type="button" value="Compare Workflow" />
@@ -124,6 +124,7 @@
 .title .int{
     font-size: 50px;
     padding-left: 5px;
+    padding-right: 7px;
     color:burlywood;
     
 }
