@@ -171,10 +171,6 @@ export default {
             value="Overlay Comparison"
             @click="compare('overlay')"
         >
-        
-        
-
-        <!-- <router-link to="/home">Home</router-link> -->
       </div>
       
     </div>

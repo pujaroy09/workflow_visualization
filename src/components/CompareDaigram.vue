@@ -1,29 +1,12 @@
 <template>
   <div class="content">
       <div class="di-container left drop-zone" target="left">
-        <!-- <div class="io-control di-header">
-          <h2>version A</h2>
-          <input class="file" type="file" target="left" />
-        </div> -->
-
         <div class="canvas" id="canvas-left"></div>
       </div>
 
       <div class="di-container right drop-zone" target="right">
-        <!-- <div class="io-control di-header">
-          <h2>version B</h2>
-          <input class="file" type="file" target="right" />
-        </div> -->
-
         <div class="canvas" id="canvas-right"></div>
       </div>
-
-      <!-- "List of Changes" -->
-      
-      <!-- <div id="changes-overview" class="collapsed">
-        <div class="io-control show-hide-toggle">List of Changes</div>
-        <div class="io-control changes"></div>
-      </div> -->
     </div>
 </template>
 
@@ -114,7 +97,6 @@ methods: {
   clearDiffs(viewer) {
     viewer.get("overlays").remove({ type: "diff" });
 
-    // TODO(nre): expose as external API
     forEach(viewer.get("elementRegistry")._elements, function (container) {
       var gfx = container.gfx,
         secondaryGfx = container.secondaryGfx;
@@ -148,8 +130,6 @@ methods: {
     }
   },
 
-  // we use $.ajax to load the diagram.
-  // make sure you run the application via web-server (ie. connect (node) or asdf (ruby))
 
   async loadDiagram(side, diagram) {
     var viewer = this.getViewer(side);
@@ -287,8 +267,6 @@ methods: {
       $("#changeDetailsNew_" + i).toggle();
     });
 
-    // create Table Overview of Changes
-    this.showChangesOverview(result, viewerOld, viewerNew);
   },
 
 
@@ -333,121 +311,6 @@ methods: {
     viewer.get("canvas").removeMarker(elementId, marker);
   },
 
-  showChangesOverview(result, viewerOld, viewerNew) {
-    $("#changes-overview table").remove();
-
-    var changesTable = $(
-      "<table>" +
-        "<thead><tr><th>#</th><th>Name</th><th>Type</th><th>Change</th></tr></thead>" +
-        "</table>"
-    );
-
-    var count = 0;
-
-    function addRow(element, type, label) {
-      var html =
-        '<tr class="entry">' +
-        "<td>" +
-        count++ +
-        "</td><td>" +
-        (element.name || "") +
-        "</td>" +
-        "<td>" +
-        element.$type.replace("bpmn:", "") +
-        "</td>" +
-        '<td><span class="status">' +
-        label +
-        "</span></td>" +
-        "</tr>";
-
-      $(html)
-        .data({
-          changed: type,
-          element: element.id
-        })
-        .addClass(type)
-        .appendTo(changesTable);
-    }
-
-    $.each(result._removed, function (i, obj) {
-      addRow(obj, "removed", "Removed");
-    });
-
-    $.each(result._added, function (i, obj) {
-      addRow(obj, "added", "Added");
-    });
-
-    $.each(result._changed, function (i, obj) {
-      addRow(obj.model, "changed", "Changed");
-    });
-
-    $.each(result._layoutChanged, function (i, obj) {
-      addRow(obj, "layout-changed", "Layout Changed");
-    });
-
-    changesTable.appendTo("#changes-overview .changes");
-
-    var HIGHLIGHT_CLS = "highlight";
-
-    $("#changes-overview tr.entry").each(() => {
-      var row = $(this);
-
-      var id = row.data("element");
-      var changed = row.data("changed");
-
-      row.hover(
-        () => {
-          if (changed === "removed") {
-            this.highlight(viewerOld, id, HIGHLIGHT_CLS);
-          } else if (changed === "added") {
-            this.highlight(viewerNew, id, HIGHLIGHT_CLS);
-          } else {
-            this.highlight(viewerOld, id, HIGHLIGHT_CLS);
-            this.highlight(viewerNew, id, HIGHLIGHT_CLS);
-          }
-        },
-        () => {
-          if (changed === "removed") {
-            this.unhighlight(viewerOld, id, HIGHLIGHT_CLS);
-          } else if (changed === "added") {
-            this.unhighlight(viewerNew, id, HIGHLIGHT_CLS);
-          } else {
-            this.unhighlight(viewerOld, id, HIGHLIGHT_CLS);
-            this.unhighlight(viewerNew, id, HIGHLIGHT_CLS);
-          }
-        }
-      );
-
-      row.click(function () {
-        var containerWidth = $(".di-container").width();
-        var containerHeight = $(".di-container").height();
-
-        var viewer = changed === "removed" ? viewerOld : viewerNew;
-
-        var element = viewer.get("elementRegistry").get(id);
-
-        var x, y;
-
-        if (element === viewer.get("canvas").getRootElement()) {
-          x = containerWidth / 2;
-          y = containerHeight / 2 - 100;
-        } else if (element.waypoints) {
-          x = element.waypoints[0].x;
-          y = element.waypoints[0].y;
-        } else {
-          x = element.x + element.width / 2;
-          y = element.y + element.height / 2;
-        }
-
-        viewer.get("canvas").viewbox({
-          x: x - containerWidth / 2,
-          y: y - (containerHeight / 2 - 100),
-          width: containerWidth,
-          height: containerHeight
-        });
-      });
-    });
-  },
   handleFileSelect(e) {
     var files = e.target.files;
     this.openFile(files[0], e.target.attributes.target.value, this.openDiagram);
@@ -475,50 +338,6 @@ mounted() {
   } else {
     this.loadDiagram("right", { url: this.rightBPMNUrl });
   }
-
-  // $(".drop-zone").each(function () {
-  //   var node = this,
-  //     element = $(node);
-  //     console.log('==================>', node, element)
-  //   element.append('<div class="drop-marker" />');
-
-  //   function removeMarker() {
-  //     $(".drop-zone").removeClass("dropping");
-  //   }
-
-  //   function handleFileSelect(e) {
-  //     e.stopPropagation();
-  //     e.preventDefault();
-
-  //     var files = e.dataTransfer.files;
-  //     this.openFile(files[0], element.attr("target"), this.openDiagram);
-
-  //     removeMarker();
-  //   }
-
-  //   function handleDragOver(e) {
-  //     removeMarker();
-
-  //     e.stopPropagation();
-  //     e.preventDefault();
-
-  //     element.addClass("dropping");
-
-  //     e.dataTransfer.dropEffect = "copy";
-  //   }
-
-  //   function handleDragLeave(e) {
-  //     removeMarker();
-  //   }
-
-  //   node.addEventListener("dragover", handleDragOver, false);
-  //   node.ownerDocument.body.addEventListener("dragover", handleDragLeave, false);
-
-  //   node.addEventListener("drop", handleFileSelect, false);
-  // });
-  // $(".file").on("change", (e) => {
-  //   this.openFile(e.target.files[0], $(this).attr("target"), this.openDiagram);
-  // });
 
   $("#changes-overview .show-hide-toggle").click(() => {
     $("#changes-overview").toggleClass("collapsed");
