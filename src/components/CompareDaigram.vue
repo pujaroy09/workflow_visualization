@@ -142,9 +142,9 @@ methods: {
 
     try {
       if (diagram.xml) {
-        await viewer.importXML(diagram.xml);
+        const result = await viewer.importXML(diagram.xml);
         viewer.get('canvas').zoom('fit-viewport');
-        done(null);
+        done(result);
         return;
       }
     } catch {
